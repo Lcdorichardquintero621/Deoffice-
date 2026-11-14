@@ -124,6 +124,14 @@ class MainActivity : Activity() {
             .setType(if (zip) "application/zip" else mime(fmt)).putExtra(Intent.EXTRA_TITLE, title), 2)
     }
 
+    private fun saveCopy() {
+        if (kind == "") return toast("Abre un archivo primero")
+        export(when (kind) {
+            "doc" -> "docx"; "sheet" -> "xlsx"; "txt" -> "txt"; "pdf" -> "pdf"
+            else -> Conv.ext(name).replace("jpeg", "jpg").let { if (it == "png" || it == "jpg" || it == "webp") it else "png" }
+        })
+    }
+
     private fun prefs() = getSharedPreferences("deoffice", MODE_PRIVATE)
 
     // Si editaste el texto, se envía a la nube tu versión editada; si no, el archivo original (conserva su formato)
